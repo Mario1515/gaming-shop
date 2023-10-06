@@ -15,3 +15,5 @@ exports.buy = async (gameId, userId) => {
     return game.save();
 
 }
+
+exports.edit = (gameId, gameData) => Game.findByIdAndUpdate(gameId, gameData);

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const gameManager = require('../managers/gameManager');
 const { isAuth } = require("../middlewares/authMiddleware");
 const {getErrorMessage} = require("../utils/errorHelpers");
+const { platformsMap } = require("../config/config");
 
 router.get("/", async (req, res) => {
 
@@ -34,7 +35,7 @@ router.get("/:gameId/details", async (req, res) => {
     const game = await gameManager.getOne(gameId).populate("purchased.user").lean();
 
     const isOwner = req.user?._id == game.owner._id; // checking if this is the creater
-    const isBuyer = game.purchased.some(id => id == req.user?._id); //checking if is the buyer
+    const isBuyer = game.purchased?.some(id => id == req.user?._id); //checking if is the buyer
     
     res.render("game/details", { game, isOwner, isBuyer});
     } catch (err){
@@ -56,6 +57,36 @@ router.get("/:gameId/buy", isAuth, async (req, res) => {
     } catch (err) {
         res.render("404");
         console.log(err);
+    }
+
+});
+
+router.get("/:gameId/edit", isAuth, async (req, res) => {
+    const game = await gameManager.getOne(req.params.gameId).lean();
+
+    const platforms = Object.keys(platformsMap).map(key => ({
+        value: key, 
+        label: platformsMap[key],
+        isSelected: game.platform == key,
+    }));
+
+    res.render(`game/edit`, { game, platforms });
+});
+
+router.post("/:gameId/edit", isAuth, async (req, res) => {
+    const gameData = req.body;
+    const gameId = req.params.gameId;
+    
+    
+    try{
+
+    await gameManager.edit(gameId, gameData);
+
+    res.redirect(`/game/${gameId}/details`);
+
+    } catch (err) {
+        const game = await gameManager.getOne(gameId).populate("purchased.user").lean();
+        res.render("game/edit", {error: "Unable to edit photo"}); //to check
     }
 
 });
