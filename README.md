@@ -8,7 +8,8 @@ GameMarket is a dedicated marketplace for buying, selling, and trading video gam
 
 GameMarket aims to be the premier marketplace for gamers, providing a seamless and secure platform to buy, sell, and trade video games.
 
-![image](https://github.com/user-attachments/assets/c71e1e6d-ddf3-47be-a883-1a0ac53c2c22)
+![image](https://github.com/user-attachments/assets/8e3648ad-c69d-4f65-a976-66f39a6677e1)
+
 ![image](https://github.com/user-attachments/assets/c641d1d5-8840-4a6a-8707-4f07ea112c2b)
 
 ## Technical Description:
